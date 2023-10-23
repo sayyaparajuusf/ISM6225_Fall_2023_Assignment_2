@@ -108,54 +108,46 @@ namespace ISM6225_Fall_2023_Assignment_2
         {
             try
             {
-                IList<IList<int>> result = new List<IList<int>>();
-
-                // Handling cases when the lower bound is smaller than the first element in nums
-                if (lower < nums[0])
+                // Handle the case when array is empty, return a range to cover full specified range.
+                if (nums == null || nums.Length == 0)
                 {
-                    // If one number missing is between lower and the first element of nums
-                    result.Add(new List<int> { lower, nums[0] - 1 });
-
-                    // Move the lower bound to nums[0] to continue checking for missing ranges within nums
-                    lower = nums[0];
+                    return new List<IList<int>> { GetRange(lower, upper) };
                 }
 
-                // for missing ranges within the nums array
-                for (int i = 0; i < nums.Length - 1; i++)
+                IList<IList<int>> rangemiss = new List<IList<int>>();
+                long start = (long)lower;
+
+                // Iterate through the array to find missing ranges.
+                foreach (int num in nums)
                 {
-                    long diff = (long)nums[i + 1] - (long)nums[i];
-                    if (diff > 1)
+                    // If there's a gap between 'start' and the current 'num', add it as a missing range.
+                    if (num > start)
                     {
-                        if (diff == 2)
-                        {
-                            result.Add(new List<int> { nums[i] + 1 });
-                        }
-                        else
-                        {
-                            result.Add(new List<int> { nums[i] + 1, nums[i + 1] - 1 });
-                        }
+                        rangemiss.Add(GetRange(start, num - 1));
                     }
+                    // Update 'start' to the next potential starting point.
+                    start = (long)num + 1;
                 }
 
-                // Handling cases where the upper bound is larger than the last element in nums
-                if (upper > nums[nums.Length - 1])
+                // If there's a missing range from the last 'start' to 'upper'.
+                if (start <= upper)
                 {
-                    // If there is only one missing number between the last element of nums and upper
-                    if (upper == nums[nums.Length - 1] + 1)
-                    {
-                        result.Add(new List<int> { upper });
-                    }
-                    else
-                    {
-                        result.Add(new List<int> { nums[nums.Length - 1] + 1, upper });
-                    }
+                    rangemiss.Add(GetRange(start, upper));
                 }
-                return result;
+
+                return rangemiss;
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        // GetRange method creates a list to represent range from 'start' to 'end'.
+        // The list contains two elements, 'start' as the first one and 'end' as the second one.
+        public static IList<int> GetRange(long start, long end)
+        {
+            return new List<int> { (int)start, (int)end };
         }
 
 
@@ -224,7 +216,6 @@ namespace ISM6225_Fall_2023_Assignment_2
 
                 // Check if there are any remaining open brackets in the stack
                 return stack.Count == 0;
-                return s.Length == 0;
             }
             catch (Exception)
             {
@@ -292,7 +283,7 @@ namespace ISM6225_Fall_2023_Assignment_2
 
                 // Return the calculated maximum profit.
                 return maxprofit;
-                return 1;
+                
             }
             catch (Exception)
             {
@@ -368,7 +359,7 @@ namespace ISM6225_Fall_2023_Assignment_2
 
                 // If the entire string has been checked and all pairs are valid, the string is a valid strobogrammatic number.
                 return true;
-                return false;
+              
             }
             catch (Exception)
             {
@@ -426,7 +417,7 @@ namespace ISM6225_Fall_2023_Assignment_2
                 }
 
                 return perfectpairs;
-                return 0;
+                
             }
             catch (Exception)
             {
@@ -538,7 +529,7 @@ namespace ISM6225_Fall_2023_Assignment_2
                 }
 
                 return moves;
-                return new List<string>() { };
+                
 
             }
             catch (Exception)
@@ -588,7 +579,7 @@ namespace ISM6225_Fall_2023_Assignment_2
             // Convert the StringBuilder to a string and return the result
 
             return $"\"{result.ToString()}\"";
-            return "";
+            
 
 
         }
